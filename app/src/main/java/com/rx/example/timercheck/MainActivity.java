@@ -8,7 +8,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private TimerCheck timerCheckUnLimite;
-    private long timerALong = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

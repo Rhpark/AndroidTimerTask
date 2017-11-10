@@ -7,9 +7,6 @@ import android.util.Log;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- */
-
 public class TimerCheck {
 
     public static final int UNLIMITED_REPEAT = -1;
