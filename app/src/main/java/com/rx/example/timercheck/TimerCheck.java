@@ -8,16 +8,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by INNO_14 on 2017-02-01.
  */
 
 public class TimerCheck {
+
+    public static final int UNLIMITED_REPEAT = -1;
 
     private TimerTask mTask;
     private Timer mTimer;
     private Handler mHandler;
 
-    public static final int UNLIMITE_REPEATE = -1;
     public final int maxRepeat;
     public final int delay_Timer;
     public final int period_Timer;
@@ -40,20 +40,39 @@ public class TimerCheck {
     /**
      * only 1000ms == 1sec
      *
-     * @param maxRepeat    count
+     * @param maxRepeat    count    >   0
      * @param delay_Timer  ms
      * @param period_Timer ms
      */
-    public TimerCheck(int maxRepeat, int delay_Timer, int period_Timer, OnCheckInTimeListener onCheckInTimeListener) {
+    public TimerCheck(int maxRepeat, int delay_Timer, int period_Timer, OnCheckInTimeListener onCheckInTimeListener)
+    {
         this.maxRepeat = maxRepeat;
         this.delay_Timer = delay_Timer;
         this.period_Timer = period_Timer;
         this.onCheckInTimeListener = onCheckInTimeListener;
+
+        if( maxRepeat < UNLIMITED_REPEAT)  throw new NumberFormatException("maxRepeat value is over than -1");
+
         Log.i("CheckTimer", "" + maxRepeat + " " + delay_Timer + " " + period_Timer);
         onCheck();
         startTimerSchedule();
     }
 
+    /**
+     * only once
+     * only 1000ms == 1sec
+     * @param delay_Timer  ms
+     */
+    public TimerCheck(int delay_Timer, OnCheckInTimeListener onCheckInTimeListener)
+    {
+        this.maxRepeat = 1;
+        this.delay_Timer = delay_Timer;
+        this.period_Timer = 0;
+        this.onCheckInTimeListener = onCheckInTimeListener;
+        Log.i("CheckTimer", "" + maxRepeat + " " + delay_Timer + " " + period_Timer);
+        onCheck();
+        startTimerSchedule();
+    }
 
     public long getCheckCnt() {
         return checkCnt;
@@ -63,8 +82,8 @@ public class TimerCheck {
         this.checkCnt = checkCnt;
     }
 
-    private void startTimerSchedule() {
-
+    private void startTimerSchedule()
+    {
         isStarting = true;
 
         if (period_Timer == 0)
@@ -73,7 +92,8 @@ public class TimerCheck {
             mTimer.schedule(mTask, delay_Timer, period_Timer);
     }
 
-    public void setTimerCancel() {
+    public void setTimerCancel()
+    {
         if (mTimer != null)
             mTimer.cancel();
 
@@ -87,8 +107,9 @@ public class TimerCheck {
         isStarting = false;
     }
 
-    public boolean getMaxcCeckCnt() {
-        if (maxRepeat == UNLIMITE_REPEATE)
+    public boolean getMaxcCeckCnt()
+    {
+        if (maxRepeat == UNLIMITED_REPEAT)
             return false;
         if (checkCnt >= maxRepeat)
             return true;
@@ -99,8 +120,8 @@ public class TimerCheck {
         return isStarting;
     }
 
-    private void onCheck() {
-
+    private void onCheck()
+    {
         setTimerCancel();
 
         mHandler = new Handler(Looper.getMainLooper());
@@ -114,11 +135,11 @@ public class TimerCheck {
                     @Override
                     public void run() {
                         try {
-                            onCheckInTimeListener.onCheckInTask(checkCnt);
+                            onCheckInTimeListener.onCheckInTask(checkCnt + 1);
 
-                            if (maxRepeat != UNLIMITE_REPEATE) {
+                            if (maxRepeat != UNLIMITED_REPEAT) {
                                 checkCnt++;
-                                if (checkCnt > maxRepeat) {
+                                if (checkCnt >= maxRepeat) {
                                     onCheckInTimeListener.callFinish();
                                     setTimerCancel();
                                 }
