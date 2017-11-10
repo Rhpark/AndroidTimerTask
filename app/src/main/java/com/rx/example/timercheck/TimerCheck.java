@@ -18,7 +18,6 @@ public class TimerCheck {
     public final int maxRepeat;
     public final int delay_Timer;
     public final int period_Timer;
-    //maxRepeat * period_Timer = all sec;
 
     private long checkCnt = 0;
 
