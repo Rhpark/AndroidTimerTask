@@ -47,11 +47,20 @@ public class TimerCheck {
         this.period_Timer = period_Timer;
         this.onCheckInTimeListener = onCheckInTimeListener;
 
-        if( maxRepeat < UNLIMITED_REPEAT)  throw new NumberFormatException("maxRepeat value is over than -1");
-
         Log.i("CheckTimer", "" + maxRepeat + " " + delay_Timer + " " + period_Timer);
+        parameterExceptionCheck();
         onCheck();
         startTimerSchedule();
+    }
+
+    private void parameterExceptionCheck()
+    {
+        if( maxRepeat < UNLIMITED_REPEAT)
+            throw new NumberFormatException("maxRepeat value is over than -1, maxRepeat = " + maxRepeat);
+        else if( delay_Timer < 0)
+            throw new NumberFormatException("delay_Timer value is over than -1, delay_Timer = " + delay_Timer);
+        else if( period_Timer < 0)
+            throw new NumberFormatException("period_Timer value is over than -1, period_Timer = " + period_Timer);
     }
 
     /**
@@ -66,6 +75,7 @@ public class TimerCheck {
         this.period_Timer = 0;
         this.onCheckInTimeListener = onCheckInTimeListener;
         Log.i("CheckTimer", "" + maxRepeat + " " + delay_Timer + " " + period_Timer);
+        parameterExceptionCheck();
         onCheck();
         startTimerSchedule();
     }
