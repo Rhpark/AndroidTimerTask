@@ -7,7 +7,7 @@ import android.util.Log;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TimerCheck {
+public class CustomTimerCheck {
 
     public static final int UNLIMITED_REPEAT = -1;
 
@@ -37,10 +37,10 @@ public class TimerCheck {
      * only 1000ms == 1sec
      *
      * @param maxRepeat    count    >   0
-     * @param delay_Timer  ms
-     * @param period_Timer ms
+     * @param delay_Timer  ms       >   -1
+     * @param period_Timer ms       >   -1
      */
-    public TimerCheck(int maxRepeat, int delay_Timer, int period_Timer, OnCheckInTimeListener onCheckInTimeListener)
+    public CustomTimerCheck(int maxRepeat, int delay_Timer, int period_Timer, OnCheckInTimeListener onCheckInTimeListener)
     {
         this.maxRepeat = maxRepeat;
         this.delay_Timer = delay_Timer;
@@ -66,9 +66,9 @@ public class TimerCheck {
     /**
      * only once
      * only 1000ms == 1sec
-     * @param delay_Timer  ms
+     * @param delay_Timer  ms   >   -1
      */
-    public TimerCheck(int delay_Timer, OnCheckInTimeListener onCheckInTimeListener)
+    public CustomTimerCheck(int delay_Timer, OnCheckInTimeListener onCheckInTimeListener)
     {
         this.maxRepeat = 1;
         this.delay_Timer = delay_Timer;
@@ -111,6 +111,7 @@ public class TimerCheck {
         mHandler = null;
 
         isStarting = false;
+        System.gc();
     }
 
     public boolean getMaxcCeckCnt()
